@@ -19,16 +19,21 @@ export default class TypeHead extends PureComponent {
       body: JSON.stringify({
         val
       })
-    })
-      .then(res => res.json())
+    }).then(res => res.json())
       .then(({ result }) => this.setState({ result }));
   }
+
   onSelect = (text) => {
     this.setState({ text, result: [] });
   }
+
+  fastTypingOverRide = null
+
   onChange = (e) => {
-    this.getResult(e.target.value);
-    this.setState({ text: e.target.value })
+    clearTimeout(this.fastTypingOverRide);
+    let val = e.target.value;
+    this.fastTypingOverRide = setTimeout(() => this.getResult(val), 500);
+    this.setState({ text: e.target.value });
   }
 
   render() {
